@@ -42,11 +42,13 @@ def insert(table_name: str, row_vals: Tuple):
         return
 
     row_idx = len(db[table_name]) - 1
-    for col_num in indices[table_name].keys():
+    table = indices[table_name]
+    for col_num in table.keys():
         index_val = row_vals[col_num]
-        if index_val not in indices[table_name][col_num]:
-            indices[table_name][col_num][index_val] = []
-        indices[table_name][col_num][index_val].append(row_idx)
+        col_indices = table[col_num]
+        if index_val not in col_indices:
+            col_indices[index_val] = []
+        col_indices[index_val].append(row_idx)
 
 
 def get(table_name: str, filter_expr) -> List[Tuple]:
@@ -74,11 +76,12 @@ def createIndex(table_name: str, col_num: int, reindex: bool = True):
     if not reindex:
         return
 
+    col_indices = indices[table_name][col_num]
     for idx, row in enumerate(db[table_name]):
         index_val = row[col_num]
-        if index_val not in indices[table_name][col_num]:
-            indices[table_name][col_num][index_val] = []
-        indices[table_name][col_num][index_val].append(idx)
+        if index_val not in col_indices:
+            col_indices[index_val] = []
+        col_indices[index_val].append(idx)
 
 
 def main():
@@ -94,6 +97,7 @@ def main():
     
     createIndex("name", 0, reindex=True)
     createIndex("name", 1, reindex=True)
+    #breakpoint()
 
     vals = getFast("name", 1, ["engineer"]) 
     print(vals)
