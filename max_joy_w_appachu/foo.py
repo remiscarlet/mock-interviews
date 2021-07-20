@@ -1,4 +1,8 @@
 """
+===
+Written in an editor with no code interpretter/running.
+===
+
 The vacation consists of N days.
 For each day you will choose one of the following activities and gain the corresponding points of happiness.
 
@@ -123,3 +127,4 @@ def main_cached(n: int, a: List[int], b: List[int], c: List[int]) -> int:
             
     return max_happiness_from_day(0)
 
+print(main_cached(3, [10,20,30], [40,50,60], [70,80,90]))
